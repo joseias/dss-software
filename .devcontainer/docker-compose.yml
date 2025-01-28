@@ -1,0 +1,43 @@
+version: '3.1'
+
+services: 
+  php_8.3.6:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8011:8000
+    volumes:
+      - ../..:/workspaces:cached
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+
+  db:
+    image: mysql:8.0
+#    restart: always
+    ports:
+      - 3311:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dss
+      MYSQL_DATABASE: dss
+      MYSQL_USER: dss
+      MYSQL_PASSWORD: dss
+      
+    command: --default-authentication-plugin=mysql_native_password
+    
+    
+  adminer:
+    image: adminer
+#    restart: always
+    ports:
+      - 8811:8080
+    
+
+volumes:
+  mysql-data:
