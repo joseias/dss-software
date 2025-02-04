@@ -1,6 +1,7 @@
 FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG USERNAME=dss
 
 RUN apt-get update  -y \
     && apt-get install -y --no-install-recommends ca-certificates apt-transport-https software-properties-common
@@ -50,17 +51,15 @@ RUN apt-get update -y \
     && apt-get install -y --no-install-recommends unzip p7zip-full 
 
 
+# Create the user
+RUN groupadd $USERNAME \
+    && useradd -g $USERNAME -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && apt-get update -y \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# from VS Code 
-#FROM mcr.microsoft.com/devcontainers/php:1-8.1-bullseye
-# Install MariaDB client
-# Install php-mysql driver
-#RUN docker-php-ext-install mysqli pdo pdo_mysql
-
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
-
+# [Optional] Set the default user. Omit if you want to keep the default as root.
+USER $USERNAME
