@@ -14,8 +14,8 @@
 		8000, 3306, 8080
 	],
 	"features": {
-		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/devcontainers-contrib/features/composer:1": {}
+	//	"ghcr.io/devcontainers/features/github-cli:1": {},
+	//	"ghcr.io/devcontainers-contrib/features/composer:1": {}
 	},
 	"customizations": {
 		"vscode": {
